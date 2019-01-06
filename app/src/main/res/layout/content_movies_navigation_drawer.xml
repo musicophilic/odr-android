@@ -12,6 +12,7 @@
             android:columnCount="1"
             android:useDefaultMargins="true"
             android:layout_marginTop="?attr/actionBarSize"
+            android:paddingBottom="?attr/actionBarSize"
             android:id="@+id/movies_grid">
 
 
