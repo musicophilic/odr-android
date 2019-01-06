@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "432953300706",
+    "firebase_url": "https://oscarsdeathrace-2ef84.firebaseio.com",
+    "project_id": "oscarsdeathrace-2ef84",
+    "storage_bucket": "oscarsdeathrace-2ef84.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:432953300706:android:579f813f82701d6c",
+        "android_client_info": {
+          "package_name": "com.tealsquares.oscarsdeathrace"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "432953300706-3eoqiim8t5l4udkbunu6o4juf47g98uk.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.tealsquares.oscarsdeathrace",
+            "certificate_hash": "34fa053d55fdf583167e0ee0b3e80603c4b262ca"
+          }
+        },
+        {
+          "client_id": "432953300706-3hnrtlfdqi8f3egmv1lloblsu86bvama.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCK66Z7IKL9o9Mkigwx84GYKsrRouBbM8k"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "432953300706-3hnrtlfdqi8f3egmv1lloblsu86bvama.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
