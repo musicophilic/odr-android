@@ -45,6 +45,7 @@ public class MoviesNavigationDrawerActivity extends AppCompatActivity
     private Map<String, Object> genericMap;
     ValueEventListener movieListener;
     ValueEventListener seenMovieListener;
+    boolean loadData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +53,9 @@ public class MoviesNavigationDrawerActivity extends AppCompatActivity
         setContentView(R.layout.activity_movies_navigation_drawer);
 
         checkForLogin();
+
+        // For overcoming loading the movies twice
+        loadData = true;
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -64,7 +68,7 @@ public class MoviesNavigationDrawerActivity extends AppCompatActivity
         toggle.syncState();
 
 
-        getSupportActionBar().setTitle("Mark seen Movies");
+        getSupportActionBar().setTitle("Oscars Death Race");
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
@@ -179,7 +183,10 @@ public class MoviesNavigationDrawerActivity extends AppCompatActivity
     protected void onResume() {
         super.onResume();
         checkForLogin();
-        movieDatabaseReference.addListenerForSingleValueEvent(movieListener);
+        if(loadData) {
+            movieDatabaseReference.addListenerForSingleValueEvent(movieListener);
+            loadData = false;
+        }
     }
 
     private Map<String,Movie> getMovieMapFromGenericMap(Map<String,Object> genericMap) {
