@@ -42,7 +42,8 @@ public class MoviesNavigationDrawerActivity extends AppCompatActivity
     private DatabaseReference movieDatabaseReference;
     private DatabaseReference seenMoviesDatabaseReference;
     private static final int currentYear = 2018;
-    private Map<String, Object> genericMap;
+    private Map<String, Movie> idMovieMap;
+    private Map<String, WatchedMovie> watchedMovieMap;
     ValueEventListener movieListener;
     ValueEventListener seenMovieListener;
     boolean loadData;
@@ -56,6 +57,8 @@ public class MoviesNavigationDrawerActivity extends AppCompatActivity
 
         // For overcoming loading the movies twice
         loadData = true;
+        watchedMovieMap = new HashMap<>();
+        idMovieMap = new HashMap<>();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -84,8 +87,10 @@ public class MoviesNavigationDrawerActivity extends AppCompatActivity
         movieListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                genericMap = (Map<String,Object>)dataSnapshot.getValue();
-                Map<String, Movie> idMovieMap = getMovieMapFromGenericMap(genericMap);
+                for(DataSnapshot movieSnapshot : dataSnapshot.getChildren()) {
+                    Movie movie = movieSnapshot.getValue(Movie.class);
+                    idMovieMap.put(movieSnapshot.getKey(), movie);
+                }
                 addMoviesToGrid(idMovieMap);
             }
 
@@ -98,7 +103,11 @@ public class MoviesNavigationDrawerActivity extends AppCompatActivity
         seenMovieListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                genericMap = (Map<String,Object>) dataSnapshot.getValue();
+                for(DataSnapshot watchedMovieSnapshot : dataSnapshot.getChildren()) {
+                    WatchedMovie watchedMovie = watchedMovieSnapshot.getValue(WatchedMovie.class);
+                    watchedMovieMap.put(watchedMovieSnapshot.getKey(), watchedMovie);
+                }
+                movieDatabaseReference.addListenerForSingleValueEvent(movieListener);
             }
 
             @Override
@@ -184,24 +193,9 @@ public class MoviesNavigationDrawerActivity extends AppCompatActivity
         super.onResume();
         checkForLogin();
         if(loadData) {
-            movieDatabaseReference.addListenerForSingleValueEvent(movieListener);
+            seenMoviesDatabaseReference.addListenerForSingleValueEvent(seenMovieListener);
             loadData = false;
         }
-    }
-
-    private Map<String,Movie> getMovieMapFromGenericMap(Map<String,Object> genericMap) {
-        Map<String, Movie> idMovieMap = new HashMap<>(genericMap.size());
-        for(Map.Entry entry : genericMap.entrySet()) {
-            HashMap<String, Object> movieHashMap = (HashMap<String, Object>) entry.getValue();
-            Movie movie = new Movie();
-            movie.setImdbTag((String)movieHashMap.get("imdbTag"));
-            movie.setMovieName((String)movieHashMap.get("movieName"));
-            Long movieYear = (Long)movieHashMap.get("movieYear");
-            movie.setMovieYear(movieYear);
-            movie.setPosterUrl((String)movieHashMap.get("posterLink"));
-            idMovieMap.put(entry.getKey().toString(), movie);
-        }
-        return idMovieMap;
     }
 
     private void addMoviesToGrid(Map<String,Movie> idMovieMap) {
@@ -217,10 +211,13 @@ public class MoviesNavigationDrawerActivity extends AppCompatActivity
             movieNameTextview.setText(movie.getMovieName());
             ImageView movieImageView = movieView.findViewById(R.id.movie_poster_imageview);
             CheckBox checkBox = movieView.findViewById(R.id.seen_checkbox);
+            if(watchedMovieMap.containsKey(id)) {
+                checkBox.setChecked(true);
+            }
             checkBox.setTag(id);
             checkBox.setOnCheckedChangeListener(checkBoxListener);
             Glide.with(this)
-                    .load(movie.getPosterUrl())
+                    .load(movie.getPosterLink())
                     .into(movieImageView);
             movieGrid.addView(movieView);
         }

@@ -26,17 +26,17 @@ public class Movie {
         this.movieYear = movieYear;
     }
 
-    public String getPosterUrl() {
-        return posterUrl;
+    public String getPosterLink() {
+        return posterLink;
     }
 
-    public void setPosterUrl(String posterUrl) {
-        this.posterUrl = posterUrl;
+    public void setPosterLink(String posterLink) {
+        this.posterLink = posterLink;
     }
 
     String imdbTag;
     String movieName;
     long movieYear;
-    String posterUrl;
+    String posterLink;
 
 }
