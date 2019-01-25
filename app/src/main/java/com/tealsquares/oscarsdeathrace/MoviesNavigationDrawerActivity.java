@@ -41,7 +41,7 @@ public class MoviesNavigationDrawerActivity extends AppCompatActivity
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference movieDatabaseReference;
     private DatabaseReference seenMoviesDatabaseReference;
-    private static final int currentYear = 2018;
+    private static final int currentYear = 2019;
     private Map<String, Movie> idMovieMap;
     private Map<String, WatchedMovie> watchedMovieMap;
     ValueEventListener movieListener;
@@ -238,6 +238,7 @@ public class MoviesNavigationDrawerActivity extends AppCompatActivity
                 seenMoviesDatabaseReference.updateChildren(childUpdates);
             } else {
                 // Delete from seen database
+                seenMoviesDatabaseReference.child(movieId).removeValue();
             }
 
         }
